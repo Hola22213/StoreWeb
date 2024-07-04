@@ -1,0 +1,99 @@
+﻿@page "/"
+
+<PageTitle>StoreWeb</PageTitle>
+<center><h1>Welcome To Our Store Web!</h1></center>
+
+<!-- Logo de la marca -->
+<br />
+<header class="encabezado">
+    <img src="/2.jpg" alt="Logo de la marca" class="logo">
+    <!-- Menú u otros elementos del encabezado -->
+    <!-- Por ejemplo, podrías incluir aquí un menú de navegación -->
+    <center><nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/Catalogo">Catálogo</a></li>
+            <li><a href="/Cesta">Cesta</a></li>
+        </ul>
+    </nav>
+    </center>
+</header>
+
+<!-- Contenido de la página -->
+<!-- Aquí va tu contenido principal -->
+<!-- Redes sociales y copyright -->
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
+    <div class="redes-sociales">
+        <a href="https://facebook.com/NaClothe" target="_blank"><img src="https://z-m-static.xx.fbcdn.net/rsrc.php/v3/yD/r/5D8s-GsHJlJ.png" alt="Facebook"></a>
+        <a href="https://instagram.com/NaClothe" target="_blank"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgZ8G156RlnXN0CC_4jMcMgxY8qkyvR0LGJQ&s" alt="Instagram"></a>
+        <a href="https://twitter.com/NaClothe" target="_blank"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTI-h-e2hgz8mwGfCt4gvj4IgMG_wAUolVM6w&s" alt="Twitter"></a>
+    </div>
+    <div style="flex: 1; text-align: center;">
+        <p style="margin: 0;">&copy; 2024 NaClothe. Todos los derechos reservados.</p>
+    </div>
+</div>
+
+<style>
+    .encabezado {
+        display: flex;
+        align-items: center;
+        justify-content: space-between; /* Distribuye el espacio entre los elementos */
+        padding: 10px 20px;
+        background-color: black;
+        height: 100px; /* Altura del encabezado */
+        color: white; /* Color del texto en el encabezado */
+    }
+
+    .logo {
+        max-height: 100px; /* Altura máxima del logo */
+        object-fit: contain; /* Ajusta la imagen al contenedor manteniendo la proporción */
+    }
+
+    nav ul {
+        list-style-type: none; /* Quita los puntos de lista del menú */
+        padding: 0; /* Quita el relleno predeterminado del ul */
+        display: flex;
+        gap: 20px; /* Espacio entre los elementos del menú */
+        margin: 0;
+    }
+
+        nav ul li a {
+            text-decoration: none; /* Quita el subrayado de los enlaces */
+            color: white; /* Color de texto blanco para los enlaces */
+            letter-spacing: 1px; /* Espacio entre letras */
+            text-align: center;
+        }
+
+            nav ul li a:hover {
+                color: gray; /* Cambia el color del texto al pasar el mouse sobre los enlaces */
+            }
+
+    .redes-sociales {
+        display: flex;
+    }
+
+        .redes-sociales a {
+            margin: 0 10px;
+            display: inline-block;
+        }
+
+        .redes-sociales img {
+            width: 30px;
+            height: auto;
+        }
+</style>
+
+@code {
+
+}

@@ -1,0 +1,68 @@
+﻿@page "/Catalogo"
+@inject CartService CartService
+
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="alert alert-success">
+        @successMessage
+        <a href="/cesta" class="alert-link">Ir a mi cesta</a>
+    </div>
+}
+
+<div class="row">
+    @foreach (var producto in productos)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img class="card-img-top" src="@producto.ImageUrl" alt="@producto.Name">
+                <div class="card-body">
+                    <h5 class="card-title">@producto.Name</h5>
+                    <p class="card-text">@producto.Description</p>
+                    <p class="card-text"><strong>@producto.Price.ToString("C", new System.Globalization.CultureInfo("es-ES"))</strong></p>
+                    <button class="btn btn-primary" @onclick="() => AddToCart(producto)">Añadir al Carrito</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private List<Producto> productos = new List<Producto>
+    {
+        new Producto { Id = 1, Name = "Camiseta", Description = "Camiseta de algodón", Price = 19.99m, ImageUrl = "https://eventos-alssport.es/2115-home_default/camiseta-algodon-adulto-130gr.jpg" },
+        new Producto { Id = 2, Name = "Pantalones vaqueros", Description = "Pantalones vaqueros", Price = 49.99m, ImageUrl = "https://images.napali.app/global/element-products/all/default/large/elydp00112_element,f_bnt0_frt1.jpg" },
+        new Producto { Id = 3, Name = "Chaqueta de cuero", Description = "Chaqueta de cuero", Price = 89.99m, ImageUrl = "https://www.e-gothiczone.com/24348/cazadora-de-cuero-clasica-cruzada-ami.jpg" },
+        new Producto { Id = 4, Name = "Zapatos de cuero", Description = "Zapatos de cuero", Price = 69.99m, ImageUrl = "https://m.media-amazon.com/images/I/51it6YZBloL._AC_UF894,1000_QL80_.jpg" },
+        new Producto { Id = 5, Name = "Falda corta de verano", Description = "Falda corta de verano", Price = 29.99m, ImageUrl = "https://media.vogue.es/photos/5ecbd2a5a561e5fab3bfc1ec/master/w_320%2Cc_limit/Michael-Michael-Kors.jpg" },
+        new Producto { Id = 6, Name = "Camisa formal", Description = "Camisa formal", Price = 39.99m, ImageUrl = "https://maknudo.com/wp-content/uploads/2016/11/Camisa-formal-manga-corta.jpg" },
+        new Producto { Id = 7, Name = "Sudadera con capucha", Description = "Sudadera con capucha", Price = 59.99m, ImageUrl = "https://www.bordamar.es/tienda-ropa-trabajo-online/wp-content/uploads/2017/08/sudadera_capucha_55_azulmarino_827_1024.jpg" },
+        new Producto { Id = 8, Name = "Vestido de fiesta", Description = "Vestido de fiesta", Price = 79.99m, ImageUrl = "https://img.joomcdn.net/1a5667009c58d46a0dfd1c991bfb61169fdd0a71_1024_1024.jpeg" },
+        new Producto { Id = 9, Name = "Calcetines deportivos", Description = "Calcetines deportivos", Price = 9.99m, ImageUrl = "https://www.brildor.com/media/catalog/product/cache/974c34425da90e66a0188f0522978d98/c/a/xcalcetines-para-sublimacion-sin-talon-talla-unica-y-hormas.jpg.pagespeed.ic.zEYl9tFN0Y.jpg" },
+        new Producto { Id = 10, Name = "Bufanda de lana", Description = "Bufanda de lana", Price = 24.99m, ImageUrl = "https://www.salamandrashopping.es/bufanda-lana_pic315803ni1t0.jpg" }
+    };
+
+    private string successMessage;
+
+    private async Task AddToCart(Producto producto)
+    {
+        try
+        {
+            await CartService.AddToCartAsync(new Product { Name = producto.Name, Description = producto.Description, Price = producto.Price });
+            successMessage = $"Se ha añadido '{producto.Name}' correctamente al carrito.";
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Error al añadir al carrito: {ex.Message}");
+            throw;
+        }
+    }
+
+    public class Producto
+    {
+        public int Id { get; set; } // Asumiendo que cada producto tiene un ID único
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal Price { get; set; }
+        public string ImageUrl { get; set; }
+    }
+}

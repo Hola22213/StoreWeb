@@ -1,0 +1,59 @@
+﻿@page "/Cesta"
+@using System.Globalization
+@inject CartService CartService
+@inject NavigationManager NavigationManager
+
+<h2>Mi Cesta</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in CartService.CartItems)
+        {
+            <tr>
+                <td>@item.Product.Name</td>
+                <td>@item.Product.Description</td>
+                <td>@item.Product.Price.ToString("C", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                <td>
+                    <input type="number" min="1" value="@item.Quantity" @onchange="(e) => UpdateQuantity(item.Product, e.Value)">
+                </td>
+                <td>@(item.Product.Price * item.Quantity)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="d-flex justify-content-end">
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Total</h5>
+            <p class="card-text">@CartService.GetTotalFormatted()</p>
+
+            <a href="/catalogo" class="btn btn-secondary">Seguir comprando</a>
+            <button class="btn btn-primary mt-2" @onclick="IrAFinalizarPago">Ir a Finalizar Pago</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private void UpdateQuantity(Product product, object value)
+    {
+        if (int.TryParse(value.ToString(), out int newQuantity))
+        {
+            CartService.UpdateQuantity(product, newQuantity);
+        }
+        // Puedes manejar el caso de error de conversión aquí si es necesario
+    }
+
+    private void IrAFinalizarPago()
+    {
+        NavigationManager.NavigateTo("/FinalizarPago");
+    }
+}

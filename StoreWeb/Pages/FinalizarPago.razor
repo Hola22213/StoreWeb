@@ -1,0 +1,97 @@
+﻿@page "/FinalizarPago"
+@using System.Globalization
+@inject CartService CartService
+@inject NavigationManager NavigationManager
+
+<h3>Finalizar Mi Pago</h3>
+
+@if (CartService.CartItems.Any())
+{
+    <h4>Resumen de la compra:</h4>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre del Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Total por Producto</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in CartService.CartItems)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Product.Price.ToString("C", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                    <td><strong>@CartService.CalcularTotal().ToString("C", CultureInfo.CreateSpecificCulture("es-ES"))</strong></td>
+                </tr>
+            }
+            <tr>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button class="btn btn-primary" @onclick="MostrarDialogo">Finalizar Mi Pago</button>
+    </div>
+}
+else
+{
+    <p>No hay productos seleccionados en tu cesta.</p>
+}
+
+@if (mostrarModal)
+{
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal fade show d-block" tabindex="-1" role="dialog" style="display: block;">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmación</h5>
+                    <button type="button" class="close" aria-label="Close" @onclick="CerrarModal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro que quieres Finalizar el Pago?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CerrarModal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" @onclick="ConfirmarFinalizarPago">Finalizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .modal-backdrop.fade.show {
+        display: block;
+    }
+
+    .modal.fade.show {
+        display: block;
+    }
+</style>
+
+@code {
+    private bool mostrarModal = false;
+
+    private void MostrarDialogo()
+    {
+        mostrarModal = true;
+    }
+
+    private void CerrarModal()
+    {
+        mostrarModal = false;
+    }
+
+    private void ConfirmarFinalizarPago()
+    {
+        mostrarModal = false;
+        NavigationManager.NavigateTo("/FormularioPago");
+    }
+}

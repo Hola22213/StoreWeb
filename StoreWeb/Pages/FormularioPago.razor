@@ -1,0 +1,123 @@
+﻿@page "/FormularioPago"
+@using System.Globalization
+@using Microsoft.AspNetCore.Components.Forms
+
+<h4>Métodos de Pago:</h4>
+
+<div class="metodos-pago">
+    <button class="metodo @GetSelectedClass(1)" @onclick="() => SelectCardType(1)">
+        <img src="https://pbs.twimg.com/profile_images/1545060006839496706/EfCWGGg9_400x400.jpg" width="50" height="40" style="margin-right: 10px;">
+    </button>
+    <button class="metodo @GetSelectedClass(2)" @onclick="() => SelectCardType(2)">
+        <img src="https://pbs.twimg.com/profile_images/965871729376718850/jMyOPx-O_400x400.jpg" width="30" height="40" style="margin-right: 10px;">
+    </button>
+    <button class="metodo @GetSelectedClass(3)" @onclick="() => SelectCardType(3)">
+        <img src="https://www.publico.es/uploads/2019/04/24/5cc09679a446f.jpg" width="50" height="40" style="margin-right: 10px;">
+    </button>
+</div>
+
+<div style="margin-top: 20px;">
+    <h4>Detalles de Pago:</h4>
+    <EditForm Model="@paymentModel" OnValidSubmit="HandleSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label for="cardNumber">Número de Tarjeta:</label>
+            <InputText id="cardNumber" @bind-Value="@paymentModel.CardNumberString" class="form-control" placeholder="Inserta tu número de tarjeta" required />
+            <ValidationMessage For="@(() => paymentModel.CardNumber)" />
+        </div>
+        <div class="form-group">
+            <label for="expiryDate">Fecha de Vencimiento:</label>
+            <InputDate id="expiryDate" @bind-Value="@paymentModel.ExpiryDate" class="form-control" format="MM/yy" placeholder="MM/YY" required />
+            <ValidationMessage For="@(() => paymentModel.ExpiryDate)" />
+        </div>
+        <div class="form-group">
+            <label for="cvv">CVV:</label>
+            <InputText id="cvv" @bind-Value="@paymentModel.CVVString" class="form-control" placeholder="Inserta tu CVV" required />
+            <ValidationMessage For="@(() => paymentModel.CVV)" />
+        </div>
+        <div style="text-align: center;">
+            <button type="submit" class="btn btn-primary">Pagar Ahora</button>
+        </div>
+    </EditForm>
+</div>
+
+<style>
+    .metodos-pago {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .metodo {
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+    }
+
+        .metodo img {
+            width: 50px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+    .selected {
+        border: 2px solid black;
+    }
+</style>
+
+@code {
+    private class PaymentModel
+    {
+        public string CardNumberString { get; set; }
+        public int? CardNumber
+        {
+            get
+            {
+                if (int.TryParse(CardNumberString, out int result))
+                {
+                    return result;
+                }
+                return null;
+            }
+        }
+
+        public DateTime? ExpiryDate { get; set; }
+
+        public string CVVString { get; set; }
+        public int? CVV
+        {
+            get
+            {
+                if (int.TryParse(CVVString, out int result))
+                {
+                    return result;
+                }
+                return null;
+            }
+        }
+
+        public int SelectedCardType { get; set; }
+    }
+
+    private PaymentModel paymentModel = new PaymentModel();
+
+    private string GetSelectedClass(int cardType)
+    {
+        return paymentModel.SelectedCardType == cardType ? "selected" : "";
+    }
+
+    private void SelectCardType(int cardType)
+    {
+        paymentModel.SelectedCardType = cardType;
+    }
+
+    private void HandleSubmit()
+    {
+        // Lógica para manejar el envío del formulario de pago
+        // Implementa aquí la lógica para procesar los datos de pago.
+    }
+}
